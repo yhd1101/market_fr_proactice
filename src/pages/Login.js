@@ -1,28 +1,48 @@
-import React, {useState} from 'react';
-import axios from "axios";
+import React, {useEffect, useState} from 'react';
+// import axios from "axios";
 import {Button, Form} from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
+import {useDispatch, useSelector} from "react-redux";
+import {login} from "../actions/userActions";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const loginHandler = async (e) => {
-        e.preventDefault() //이걸 설정안해주면 무한반복
-        try {
-            const userInput ={ //사용자가 던져주는 값
-                email,password
-            }
+    const userLogin = useSelector((state) => state.userLogin)
+    const { loading, error, userInfo } = userLogin
 
-            const result = await axios.post("http://localhost:9000/user/login",userInput)
-
-            console.log("+++++++++++++++++++++", result)
-        } catch (err){
-            console.log(err)
+    useEffect(() => {
+        if(userInfo) {
+            navigate("/")
         }
+    }, [navigate, userInfo])
 
-
-
+    const loginHandler = async (e) => {
+        e.preventDefault()
+        dispatch(login(email, password))
     }
+
+
+    // const loginHandler = async (e) => {
+    //     e.preventDefault() //이걸 설정안해주면 무한반복
+    //     try {
+    //         const userInput ={ //사용자가 던져주는 값
+    //             email,password
+    //         }
+    //
+    //         const result = await axios.post("http://localhost:9000/user/login",userInput)
+    //
+    //         console.log("+++++++++++++++++++++", result)
+    //     } catch (err){
+    //         console.log(err)
+    //     }
+    //
+    //
+    //
+    // }
 
 
     return (
