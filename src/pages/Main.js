@@ -26,10 +26,10 @@ const Main = () => {
 
 
     return (
-        <Container>
+        <Container className={"mt-5"}>
             <Row>
                 {products && products.map(product => (
-                    <Col>
+                    <Col className={"mt-5"}>
                         <Card style={{ width: '18rem' }}>
                             <Card.Img variant="top" style={{height: '250px', width: '100%'}} src={product.picture} />
                             <Card.Body>
