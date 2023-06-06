@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 
 const Main = () => {
+    const navigate = useNavigate()
     const [products, setProducts] = useState([])
+
 
     const getProducts = async () => {
         try {
@@ -38,7 +41,7 @@ const Main = () => {
                                     Some quick example text to build on the card title and make up the
                                     bulk of the card's content.
                                 </Card.Text>
-                                <Button variant="primary">Go somewhere</Button>
+                                <Button onClick={() => navigate(`/product/${product._id}`)}>Go Detail</Button>
                             </Card.Body>
                         </Card>
                     </Col>

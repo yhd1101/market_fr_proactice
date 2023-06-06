@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 // import axios from "axios";
-import {Button, Form} from "react-bootstrap";
+import {Alert, Button, Form, Spinner} from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
 import {useDispatch, useSelector} from "react-redux";
 import {login} from "../actions/userActions";
@@ -47,6 +47,16 @@ const Login = () => {
 
     return (
         <FormContainer title={"Login"}>
+            {loading ? (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            ) : null}
+            {error ? (
+                <Alert variant={"danger"}>
+                    {error}
+                </Alert>
+            ) : null}
             <Form className={"mt-5"} onSubmit={loginHandler}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>

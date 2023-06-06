@@ -1,11 +1,15 @@
 import React from 'react';
 import {Container, Nav, Navbar, NavbarBrand, NavDropdown} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
+import {logout} from "../actions/userActions";
 
 const Header = () => {
     const dispatch = useDispatch()
     const userLogin = useSelector((state) => state.userLogin)
     const { loading, error, userInfo } = userLogin
+    const logoutHandler = () => {
+        dispatch(logout())
+    }
 
     return (
         <header>
@@ -18,9 +22,16 @@ const Header = () => {
                         </Nav>
                         <Nav>
                             <Nav.Link href="#deets">중고거래</Nav.Link>
-                            <Nav.Link href="#memes">
+                            <Nav.Link href={"/job"}>
                                 구인구직
                             </Nav.Link>
+                            <NavDropdown title="언어변환" id="basic-nav-dropdown">
+                                <NavDropdown.Item href="#action/3.1">한국어</NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.2">
+                                    일본어
+                                </NavDropdown.Item>
+                                <NavDropdown.Item href="#action/3.3">중국어</NavDropdown.Item>
+                            </NavDropdown>
 
                             {userInfo ? (
                                 <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
@@ -30,7 +41,7 @@ const Header = () => {
                                     </NavDropdown.Item>
                                     <NavDropdown.Item href="#action/3.3">약속시간</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="#action/3.4">
+                                    <NavDropdown.Item onClick={logoutHandler}>
                                         로그아웃
                                     </NavDropdown.Item>
                                 </NavDropdown>

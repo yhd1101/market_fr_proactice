@@ -1,9 +1,11 @@
 import React from "react"
 import {createBrowserRouter} from "react-router-dom";
 import Main from "./pages/Main";
-import Detail from "./pages/Detail"
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Job from "./pages/Job";
+import JobDetail from "./pages/JobDetail";
+import ProductDetail from "./pages/ProductDetail";
 
 const router = createBrowserRouter([
     {
@@ -11,9 +13,14 @@ const router = createBrowserRouter([
         element: <Main/>
     },
     {
-        path:"/product/:id",
-        element:<Detail/>
+        path:"/product/:productId",
+        element:<ProductDetail/>
     },
+    {
+        path:"/job/:jobId",
+        element: <JobDetail/>
+    },
+
     {
         path:"/signup",
         element: <Signup/>
@@ -22,6 +29,10 @@ const router = createBrowserRouter([
         path:"/login",
         element: <Login/>
     },
+    {
+        path:"/job",
+        element: <Job/>
+    }
 ])
 
 export default router

@@ -1,37 +1,67 @@
-import React, {useState} from 'react';
-import axios from "axios";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import React, {useEffect, useState} from 'react';
+import {Alert, Button, Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import FormContainer from "../components/FormContainer";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {signup} from "../actions/userActions";
 
 const Signup = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [fourteenOver, setFourteenOver] = useState(false)
-    const [agreeOfTerm, setAgreeOfTerm] = useState(false) //약관동의
-    const [agreeOfPersonalInfo, setAgreeOfPersonalInfo] = useState(false)
+    const [fourteenOver, setFourteenOver] = useState(true)
+    const [agreeOfTerm, setAgreeOfTerm] = useState(true) //약관동의
+    const [agreeOfPersonalInfo, setAgreeOfPersonalInfo] = useState(true)
 
+    const userSignup = useSelector((state) => state.userSignup)
+    const { loading, success, error} = userSignup
 
+    useEffect(() => {
+        if(success){
+            navigate("/login")
+        }
+    }, [navigate, success])
 
     const signupHandler = async (e) => {
         e.preventDefault()
-        console.log(agreeOfTerm)
-        console.log(fourteenOver)
-        try{
-            const userInput = {
-                name, email, password
-            }
-            const result = await axios.post("http://localhost:9000/user/signup", userInput)
-            console.log("++++++++++++++++++++",result)
-        } catch (err){
-            console.log(err)
+        if (!fourteenOver || !agreeOfTerm || !agreeOfPersonalInfo){
+            alert("필수값을 체크하세요")
+            return
         }
-
+        dispatch(signup(name, email, password))
     }
+
+    // const signupHandler = async (e) => {
+    //     e.preventDefault()
+    //     console.log(agreeOfTerm)
+    //     console.log(fourteenOver)
+    //     try{
+    //         const userInput = {
+    //             name, email, password
+    //         }
+    //         const result = await axios.post("http://localhost:9000/user/signup", userInput)
+    //         console.log("++++++++++++++++++++",result)
+    //     } catch (err){
+    //         console.log(err)
+    //     }
+    //
+    // }
 
 
     return (
         <FormContainer title={"회원가입"}>
+            {loading ? (
+                <Spinner animation="border" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                </Spinner>
+            ) : null}
+            {error ? (
+                <Alert variant={"danger"}>
+                    {error}
+                </Alert>
+            ) : null}
             <Form className={"mt-5"} onSubmit={signupHandler}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
